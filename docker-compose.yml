@@ -1,0 +1,17 @@
+version: '3'
+services:
+  ganache:
+    build:
+      context: .
+      dockerfile: Dockerfile.ganache
+    expose:
+      - "8545"
+  gozer:
+    build:
+      context: .
+      dockerfile: Dockerfile.gozer
+    ports:
+      - "8080:8080"
+    depends_on:
+      - "ganache"
+

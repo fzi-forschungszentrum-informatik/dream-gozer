@@ -1,0 +1,2 @@
+storage.tgz filter=lfs diff=lfs merge=lfs -text
+chaindb.tgz filter=lfs diff=lfs merge=lfs -text

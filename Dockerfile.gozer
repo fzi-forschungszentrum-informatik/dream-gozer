@@ -1,0 +1,73 @@
+## Stage #1: download and build Android frontend (aka ploc) #######################################
+FROM gradle:5.1.1-jdk8 AS frontend_build
+
+# The only argument that is required is the FQDN of the computer that hosts GoZer.
+# The FQDN must be reachable from your android device.
+ARG GOZER_URL_VAR="http://localhost:8080"
+
+# installing Android SDK under /usr/local/... requires root permissions
+USER root
+ENV SDK_URL="https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip" \
+    ANDROID_SDK_ROOT="/usr/local/android-sdk" \
+    SRC_DIR="/src" \
+    GOZER_URL=\"$GOZER_URL_VAR\"
+
+WORKDIR ${ANDROID_SDK_ROOT}
+
+# download and install Android SDK
+RUN wget ${SDK_URL} -O android_sdk.zip && \
+    unzip android_sdk.zip && \
+    rm android_sdk.zip && \
+    yes | $ANDROID_SDK_ROOT/tools/bin/sdkmanager --licenses
+
+WORKDIR ${SRC_DIR}
+
+# download the app's source code
+RUN git clone -q https://github.com/fzi-forschungszentrum-informatik/dream-ploc.git 
+
+WORKDIR ${SRC_DIR}/ploc
+
+# build the ploc apk-file 
+# build path: /usr/local/ploc-app/ploc/app/build/outputs/apk/debug/app-debug.apk
+RUN chmod +x ./gradlew && \
+    ./gradlew clean assembleDebug -PGOZER_ADDRESS=$GOZER_URL
+
+## Stage #2: download and build backend service (aka GoZer) #######################################
+FROM golang:1.10.3-alpine3.8 AS backend_build
+
+ENV SRC_DIR="/go/src/github.com/fzi-forschungszentrum-informatik" \
+    GOOS="linux" \
+    GOARCH="amd64"
+
+RUN apk update && \
+    apk add sqlite git git-lfs make gcc libc-dev linux-headers
+
+WORKDIR ${SRC_DIR}
+
+# TODO: Remove token
+RUN git clone -q https://github.com/fzi-forschungszentrum-informatik/dream-gozer.git 
+
+WORKDIR ${SRC_DIR}/gozer
+
+RUN make install_packages
+RUN make gozer
+
+## Stage #3: copy database, config and ploc app and start gozer service ###########################
+FROM alpine:3.8 AS gozer_service 
+
+RUN apk update && \
+    apk add sqlite
+
+WORKDIR /gozer
+
+COPY --from=frontend_build /src/ploc/app/build/outputs/apk/debug/app-debug.apk ./ploc.apk
+COPY --from=backend_build /go/src/github.com/fzi-forschungszentrum-informatik/gozer/gozer .
+COPY --from=backend_build /go/src/github.com/fzi-forschungszentrum-informatik/gozer/gozer.conf .
+COPY --from=backend_build /go/src/github.com/fzi-forschungszentrum-informatik/gozer/storage.tgz .
+
+RUN tar -xzf storage.tgz && \
+    rm storage.tgz
+
+EXPOSE 8080
+
+CMD ["./gozer"]

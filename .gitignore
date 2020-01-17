@@ -1,0 +1,8 @@
+.dockerignore
+gozer
+*.apk
+*.sublime-*
+*.sh
+*.db
+*.mx
+*.nb

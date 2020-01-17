@@ -1,0 +1,10 @@
+FROM trufflesuite/ganache-cli:v6.7.0
+
+WORKDIR /
+COPY chaindb.tgz /
+RUN tar -xzf chaindb.tgz && rm chaindb.tgz
+WORKDIR /app
+
+EXPOSE 8545
+
+ENTRYPOINT ["node", "/app/ganache-core.docker.cli.js", "-d", "-a=1", "--account=0x6370fd033278c143179d81c5526140625662b8daa446c22ee2d73db3707e620c,100000000000000000000000", "--db", "/chaindb", "-m", "math fatal detail become balance left behind era height useful biology must", "-i", "42"]
