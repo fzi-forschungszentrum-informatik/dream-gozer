@@ -1,4 +1,4 @@
-GOZER_URI := github.com/fzi-forschungszentrum-informatik/gozer
+GOZER_URI := github.com/fzi-forschungszentrum-informatik/dream-gozer
 
 GOFILES = $(shell find . -name "*.go" -type f) 
 
