@@ -78,7 +78,7 @@ func (st *Ledger) AddFeedback(orcId string, bibHash string, relevance uint8, pre
 	}
 
 	transactOpts := bind.NewKeyedTransactor(st.PrivateKey)
-	transaction, err := st.Contract.AddFeedback(transactOpts, binOrcId, binBibHash, relevance, presentation, methodology)
+	_, err = st.Contract.AddFeedback(transactOpts, binOrcId, binBibHash, relevance, presentation, methodology)
 
 	if err != nil {
 		log.Printf("Failed to deploy feedback transaction to ledger.")
