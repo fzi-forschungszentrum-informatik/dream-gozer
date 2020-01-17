@@ -9,7 +9,7 @@ import (
 )
 
 import (
-	"github.com/fzi-forschungszentrum-informatik/gozer/config"
+	"github.com/fzi-forschungszentrum-informatik/dream-gozer/config"
 	_ "github.com/mattn/go-sqlite3"
 )
 

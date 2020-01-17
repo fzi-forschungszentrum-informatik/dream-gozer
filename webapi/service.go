@@ -9,9 +9,9 @@ import (
 )
 
 import (
-	"github.com/fzi-forschungszentrum-informatik/gozer/config"
-	"github.com/fzi-forschungszentrum-informatik/gozer/storage"
-	"github.com/fzi-forschungszentrum-informatik/gozer/storage/ledger"
+	"github.com/fzi-forschungszentrum-informatik/dream-gozer/config"
+	"github.com/fzi-forschungszentrum-informatik/dream-gozer/storage"
+	"github.com/fzi-forschungszentrum-informatik/dream-gozer/storage/ledger"
 )
 
 // A Service object represents a Web service and its running state.

@@ -9,8 +9,8 @@ import (
 )
 
 import (
-	"github.com/fzi-forschungszentrum-informatik/gozer/model"
-	"github.com/fzi-forschungszentrum-informatik/gozer/storage"
+	"github.com/fzi-forschungszentrum-informatik/dream-gozer/model"
+	"github.com/fzi-forschungszentrum-informatik/dream-gozer/storage"
 	"github.com/google/uuid"
 )
 

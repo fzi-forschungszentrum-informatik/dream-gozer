@@ -8,8 +8,8 @@ import (
 )
 
 import (
-	"github.com/fzi-forschungszentrum-informatik/gozer/model"
-	"github.com/fzi-forschungszentrum-informatik/gozer/model/ploc"
+	"github.com/fzi-forschungszentrum-informatik/dream-gozer/model"
+	"github.com/fzi-forschungszentrum-informatik/dream-gozer/model/ploc"
 	_ "github.com/mattn/go-sqlite3"
 )
 

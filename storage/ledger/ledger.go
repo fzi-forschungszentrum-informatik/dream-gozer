@@ -11,7 +11,7 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/ethclient"
-	"github.com/fzi-forschungszentrum-informatik/gozer/config"
+	"github.com/fzi-forschungszentrum-informatik/dream-gozer/config"
 )
 
 // Ledger defines an abstraction to the Ethereum blockchain, that includes the contract and the private
