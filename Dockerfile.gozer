@@ -25,10 +25,9 @@ WORKDIR ${SRC_DIR}
 # download the app's source code
 RUN git clone -q https://github.com/fzi-forschungszentrum-informatik/dream-ploc.git 
 
-WORKDIR ${SRC_DIR}/ploc
+WORKDIR ${SRC_DIR}/dream-ploc
 
 # build the ploc apk-file 
-# build path: /usr/local/ploc-app/ploc/app/build/outputs/apk/debug/app-debug.apk
 RUN chmod +x ./gradlew && \
     ./gradlew clean assembleDebug -PGOZER_ADDRESS=$GOZER_URL
 
@@ -47,7 +46,7 @@ WORKDIR ${SRC_DIR}
 # TODO: Remove token
 RUN git clone -q https://github.com/fzi-forschungszentrum-informatik/dream-gozer.git 
 
-WORKDIR ${SRC_DIR}/gozer
+WORKDIR ${SRC_DIR}/dream-gozer
 
 RUN make install_packages
 RUN make gozer
@@ -60,10 +59,10 @@ RUN apk update && \
 
 WORKDIR /gozer
 
-COPY --from=frontend_build /src/ploc/app/build/outputs/apk/debug/app-debug.apk ./ploc.apk
-COPY --from=backend_build /go/src/github.com/fzi-forschungszentrum-informatik/gozer/gozer .
-COPY --from=backend_build /go/src/github.com/fzi-forschungszentrum-informatik/gozer/gozer.conf .
-COPY --from=backend_build /go/src/github.com/fzi-forschungszentrum-informatik/gozer/storage.tgz .
+COPY --from=frontend_build /src/dream-ploc/app/build/outputs/apk/debug/app-debug.apk ./ploc.apk
+COPY --from=backend_build /go/src/github.com/fzi-forschungszentrum-informatik/dream-gozer/gozer .
+COPY --from=backend_build /go/src/github.com/fzi-forschungszentrum-informatik/dream-gozer/gozer.conf .
+COPY --from=backend_build /go/src/github.com/fzi-forschungszentrum-informatik/dream-gozer/storage.tgz .
 
 RUN tar -xzf storage.tgz && \
     rm storage.tgz
